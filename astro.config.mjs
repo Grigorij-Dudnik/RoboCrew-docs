@@ -26,8 +26,7 @@ export default defineConfig({
               items: [
                 { label: 'First time Setup', link: 'guides/setup/raspberry-and-plug' },
                 { label: 'Installing RoboCrew', link: 'guides/setup/installing-robocrew' },
-                { label: 'Setting up udev rules', link: 'guides/setup/udev-rules' },
-              ],
+                { label: 'Setting up udev rules', link: 'guides/setup/udev-rules' },              ],
             },
             { 
               label: 'Examples',
@@ -36,6 +35,13 @@ export default defineConfig({
                 { label: 'Audio and Voice', link: 'guides/examples/audio' },
                 { label: 'Arm manipulation (VLA)', link: 'guides/examples/vla-as-tools' },
                 { label: 'Multi-Agent Mission', link: 'guides/examples/multiagent' },
+              ],
+            },
+            { 
+              label: 'Additional Features',
+              items: [
+                { label: 'Additional Features', link: 'guides/features/features' },
+                { label: 'Using the Position Tool', link: 'guides/features/position-tool' },
               ],
             },
           ],

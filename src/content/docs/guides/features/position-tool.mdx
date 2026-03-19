@@ -1,0 +1,125 @@
+---
+title: Position tools
+description: How to record, save, and recall XLeRobot arm poses using the built-in position script.
+---
+
+RoboCrew includes an interactive hardware script that lets you:
+
+1. Move one or both arms by hand to a desired pose.
+2. Save that pose to a JSON file.
+3. Move the arm away.
+4. Recall the saved pose and validate that the robot returned to it.
+
+This is the fastest way to create reusable arm positions for demos, manipulation tasks, and repeatable testing.
+
+## 1. Prerequisites
+
+Before running the script:
+
+1. Connect your arm controllers and ensure udev aliases are available:
+	 * `/dev/arm_right`
+	 * `/dev/arm_left`
+2. Install RoboCrew in your environment.
+3. Keep enough free space around the robot to manually reposition the arms safely.
+
+## 2. Run the Position Recorder
+
+From your RoboCrew environment, run one of the following commands:
+
+```bash frame="none"
+robocrew-record-positions --arms both
+```
+
+```bash frame="none"
+robocrew-record-positions --arms right --position-name my_right_arm_pose
+```
+
+## 3. CLI Options
+
+* `--arms {left,right,both}`: Select which arm(s) are recorded and recalled. Default is `both`.
+* `--position-name NAME`: Output filename (without extension) under `~/.cache/robocrew/positions/`. Default is `position_save_recall_test`.
+* `--pause SECONDS`: Pause time after recall before validation. Default is `1.0`.
+
+## 4. Interactive Flow (What Happens)
+
+The script guides you through a 4-step process:
+
+1. **Release torque** on the selected arms so you can move them manually.
+2. **Capture current joint positions** and save them to JSON.
+3. Prompt you to **move arms away** from that pose.
+4. **Recall saved pose** and compare live arm positions with the saved values.
+
+If everything matches, you should see:
+
+```text
+PASS: save + recall behavior looks correct.
+```
+
+## 5. Where Files Are Stored
+
+Saved positions are written to:
+
+```text
+~/.cache/robocrew/positions/<position-name>.json
+```
+
+Typical JSON structures:
+
+For one arm (`--arms left` or `--arms right`):
+
+```json
+{
+  "arm_side": "right",
+  "positions": {
+    "shoulder_pan": 42.54083484573503,
+    "shoulder_lift": 29.726368159203982,
+    "elbow_flex": 38.80994671403197,
+    "wrist_flex": 92.07879295892707,
+    "wrist_roll": 23.49206349206349,
+    "gripper": 4.715762273901809
+  }
+}
+```
+
+For both arms (`--arms both`):
+
+```json
+{
+  "arm_side": "both",
+  "positions": {
+    "left": {
+      "shoulder_pan": 47.25234996384671,
+      "shoulder_lift": 1.6970198675496688,
+      "elbow_flex": 99.15705412599823,
+      "wrist_flex": 5.565068493150685,
+      "wrist_roll": 25.006105006105006,
+      "gripper": 2.570281124497992
+    },
+    "right": {
+      "shoulder_pan": 43.55716878402904,
+      "shoulder_lift": 6.177446102819237,
+      "elbow_flex": 94.80461811722914,
+      "wrist_flex": 6.538139145012574,
+      "wrist_roll": 23.394383394383393,
+      "gripper": 4.844961240310078
+    }
+  }
+}
+```
+
+## 6. Troubleshooting
+
+* **`No arm joints discovered from controller maps.`**
+	* Check that the selected arm USB aliases exist and point to connected devices.
+* **Validation mismatch errors**
+	* Ensure the arm completed motion before validation (`--pause 2.0` can help).
+	* Re-run and avoid touching the arm during recall.
+* **Permission errors on `/dev/arm_*`**
+	* Revisit your udev setup and reconnect the devices.
+
+## 7. Typical Workflow in Practice
+
+1. Record a base pose: `--position-name default`.
+2. Record task poses: `pickup`, `handover`, `dropoff`.
+3. Use these names in your manipulation tools and scripts for repeatable behavior.
+
