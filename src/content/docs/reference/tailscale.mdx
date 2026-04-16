@@ -1,0 +1,52 @@
+---
+title: Tailscale setup
+description: A test guide in my new Starlight docs site.
+---
+
+Setting up Tailscale is remarkably simple because it handles the complex networking (like NAT traversal) for you. Here is the compact guide to getting your private mesh network running.
+
+---
+
+### 1. Create an Account
+Before installing the software, you need a coordination server to manage your nodes.
+* Go to **[tailscale.com](https://tailscale.com)** and sign up.
+* You can use Single Sign-On (SSO) through Google, Microsoft, GitHub, or Apple.
+
+### 2. Install on Your Devices
+You need at least two devices to see the "magic" happen.
+
+**For Desktop & Mobile:**
+* **Windows/macOS:** Download the installer from the website, run it, and log in.
+* **iOS/Android:** Search for "Tailscale" in your app store, install, and sign in.
+
+**For Linux (The Quick Way):**
+Run the official installation script:
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+Then, bring the interface up:
+```bash
+sudo tailscale up
+```
+*Follow the URL provided in the terminal to authenticate.*
+
+### 3. Connect and Verify
+Once logged in, your devices are part of your **Tailnet**.
+* **Check the Admin Console:** Visit the [Tailscale Machines page](https://login.tailscale.com/admin/machines). You’ll see all connected devices and their unique **100.x.y.z** IP addresses.
+* **Test the Connection:** From "Device A," try to ping the Tailscale IP of "Device B":
+    ```bash
+    ping 100.x.y.z
+    ```
+
+
+
+---
+
+### 4. Essential Quick Commands (Linux/CLI)
+| Command | Action |
+| :--- | :--- |
+| `tailscale status` | See other devices on your network. |
+| `tailscale ip -4` | Show your current device's Tailscale IP. |
+| `tailscale logout` | Disconnect the device from the Tailnet. |
+| `tailscale up --exit-node=<ip>` | Route all your traffic through a specific node (VPN style). |
+

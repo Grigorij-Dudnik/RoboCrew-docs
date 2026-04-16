@@ -1,6 +1,10 @@
 ---
-title: Position tools
+title: Arm Pose Recording and Recall
 description: How to record, save, and recall XLeRobot arm poses using the built-in position script.
+---
+
+This tool allows you to easily capture and reuse specific arm configurations. This is especially useful for creating consistent starting positions or specific poses needed for tasks without having to hardcode joint angles. 
+
 ---
 
 RoboCrew includes an interactive hardware script that lets you:
@@ -34,28 +38,11 @@ robocrew-record-positions --arms both
 robocrew-record-positions --arms right --position-name my_right_arm_pose
 ```
 
-## 3. CLI Options
-
 * `--arms {left,right,both}`: Select which arm(s) are recorded and recalled. Default is `both`.
 * `--position-name NAME`: Output filename (without extension) under `~/.cache/robocrew/positions/`. Default is `position_save_recall_test`.
 * `--pause SECONDS`: Pause time after recall before validation. Default is `1.0`.
 
-## 4. Interactive Flow (What Happens)
-
-The script guides you through a 4-step process:
-
-1. **Release torque** on the selected arms so you can move them manually.
-2. **Capture current joint positions** and save them to JSON.
-3. Prompt you to **move arms away** from that pose.
-4. **Recall saved pose** and compare live arm positions with the saved values.
-
-If everything matches, you should see:
-
-```text
-PASS: save + recall behavior looks correct.
-```
-
-## 5. Where Files Are Stored
+{/* ## 4. Where Files Are Stored
 
 Saved positions are written to:
 
@@ -105,21 +92,4 @@ For both arms (`--arms both`):
     }
   }
 }
-```
-
-## 6. Troubleshooting
-
-* **`No arm joints discovered from controller maps.`**
-	* Check that the selected arm USB aliases exist and point to connected devices.
-* **Validation mismatch errors**
-	* Ensure the arm completed motion before validation (`--pause 2.0` can help).
-	* Re-run and avoid touching the arm during recall.
-* **Permission errors on `/dev/arm_*`**
-	* Revisit your udev setup and reconnect the devices.
-
-## 7. Typical Workflow in Practice
-
-1. Record a base pose: `--position-name default`.
-2. Record task poses: `pickup`, `handover`, `dropoff`.
-3. Use these names in your manipulation tools and scripts for repeatable behavior.
-
+``` */}

@@ -1,8 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { ion } from "starlight-ion-theme";
-
+import starlightThemeNova from 'starlight-theme-nova';
+// import ion from '@starlight-plugins/ion';
 
 export default defineConfig({
   site: 'https://Grigorij-Dudnik.github.io/RoboCrew',
@@ -21,17 +21,11 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { label: 'Quick Start Guide', link: 'guides/start' },
-            { 
-              label: 'First Setup (Recommended if it\'s your first time)',
-              items: [
-                { label: 'First time Setup', link: 'guides/setup/raspberry-and-plug' },
-                { label: 'Installing RoboCrew', link: 'guides/setup/installing-robocrew' },
-                { label: 'Setting up udev rules', link: 'guides/setup/udev-rules' },              ],
-            },
+            { label: 'Full Setup', link: 'guides/setup/installing-robocrew' },
             { 
               label: 'Examples',
               items: [
-                { label: 'Examples', link: 'guides/examples/movement' },
+                { label: 'Movement', link: 'guides/examples/movement' },
                 { label: 'Audio and Voice', link: 'guides/examples/audio' },
                 { label: 'Arm manipulation (VLA)', link: 'guides/examples/vla-as-tools' },
                 { label: 'Multi-Agent Mission', link: 'guides/examples/multiagent' },
@@ -40,7 +34,6 @@ export default defineConfig({
             { 
               label: 'Additional Features',
               items: [
-                { label: 'Additional Features', link: 'guides/features/features' },
                 { label: 'Using the Position Tool', link: 'guides/features/position-tool' },
               ],
             },
@@ -51,7 +44,7 @@ export default defineConfig({
           autogenerate: { directory: 'reference' },
         },
       ],
-      plugins: [ion()],
+      plugins: [starlightThemeNova()],
     }),
   ],
 });

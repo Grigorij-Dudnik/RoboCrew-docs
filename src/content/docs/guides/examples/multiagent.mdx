@@ -1,5 +1,5 @@
 ---
-title: Multi-Agent Mission
+title: Multiple Agents
 description: Planner + Executor architecture for complex multi-step robot missions.
 ---
 
@@ -38,11 +38,11 @@ for a complete implementation of the concepts covered in this tutorial.
 
 ## Example script
 
-See `examples/4_xlerobot_multiagent_cooperation.py` for the full example. Key parts:
+Key parts of our [script](https://github.com/Grigorij-Dudnik/RoboCrew/blob/master/examples/4_xlerobot_multiagent_cooperation.py):
 
 ### Executor — fast reactive model
 
-```python
+```python {3}
 executor = XLeRobotAgent(
     model="google_genai:gemini-3-flash-preview",
     thinking_level="minimal",   # fast decisions
@@ -54,13 +54,13 @@ executor = XLeRobotAgent(
 
 ### Planner — strategic reasoning model
 
-```python
+```python /execute_subtask/ {5}
 execute_subtask = create_execute_subtask(executor)
 
 planner = LLMAgent(
     model="google_genai:gemini-3.1-pro-preview",
     thinking_level="high",   # deep reasoning
-    tools=[look_around, execute_subtask, finish_task],
+    tools=[execute_subtask, look_around, finish_task],
     system_prompt=planner_prompt,
     ...
 )

@@ -1,5 +1,5 @@
 ---
-title: VLA Manipulation Tutorial
+title: VLA Manipulation Tools
 description: How to use Vision-Language-Action (VLA) policies as tools in RoboCrew.
 ---
 
@@ -18,6 +18,25 @@ Before the agent can use an arm, you must have a VLA server running in a separat
 python -m lerobot.async_inference.policy_server --host=0.0.0.0 --port=8080
 
 ```
+### Three recomended ways to setup server
+
+#### A. Driectly on robot
+
+This method hosts the VLA policy on the robot's onboard computer, providing the lowest possible latency for real-time motor control. It is the most robust option but realisticly Raspberry Pi 5 is too weak for it.
+
+While settng up **VLA tool** set `server_address="0.0.0.0:8080"`
+
+#### B. Local server
+
+By running the policy on a powerful workstation within the same local network, you can leverage high-end GPUs while keeping the robot lightweight.
+
+While settng up **VLA tool** set `server_address="your-server-ip"`
+
+#### C. External server (Tailscale recomendation)
+
+Using a VPN like Tailscale allows you to connect to a remote cloud server or a distant workstation securely over the internet.
+
+While settng up **VLA tool** set `server_address="your-tailscale-server-ip"`
 
 ## 2. Creating a VLA Tool
 
@@ -25,7 +44,10 @@ You define a manipulation tool using the `create_vla_single_arm_manipulation` fa
 
 ### Example Configuration
 
-```python
+#### Remember to ensure `server_address` has correct value.
+
+
+```python {7}
 from robocrew.robots.XLeRobot.tools import create_vla_single_arm_manipulation
 
 pick_up_notebook = create_vla_single_arm_manipulation(
@@ -46,19 +68,3 @@ pick_up_notebook = create_vla_single_arm_manipulation(
 )
 
 ```
-
-## 3. Critical Manipulation Rules
-
-For successful manipulation, the agent must follow these hardware-specific constraints defined in the system prompt:
-
-* **Arm Reach**: The robot's arm reach is very short (~30cm).
-* **Mode Requirement**: Always switch to **PRECISION** mode before attempting any manipulation to tilt the camera down.
-* **The Green Line**: In PRECISION mode, augmented "green lines" appear in the camera feed. The **BASE** of the target object must be **BELOW** this line before the tool is activated.
-* **Alignment**: The target must be centered in the view. If it is off-center, the agent should use `strafe` or `turn` tools to align first.
-
-## 4. Execution Workflow
-
-1. **Release Camera**: When a VLA tool is activated, it temporarily "steals" the camera from the LLM agent so the policy can process the video feed directly.
-2. **Control Loop**: The tool connects to the `RobotClient`, sends the `task_prompt` to the server, and executes actions for the specified `execution_time`.
-3. **Restore State**: After completion, the tool re-opens the camera for the agent and resets the robot's head to the normal position.
-4. **Verification**: The agent is instructed to always verify the success of the manipulation via the camera feed after the tool finishes.
