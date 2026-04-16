@@ -27,14 +27,14 @@ export default defineConfig({
               items: [
                 { label: 'Movement', link: 'guides/examples/movement' },
                 { label: 'Audio and Voice', link: 'guides/examples/audio' },
-                { label: 'Arm manipulation (VLA)', link: 'guides/examples/vla-as-tools' },
-                { label: 'Multi-Agent Mission', link: 'guides/examples/multiagent' },
+                { label: 'VLA Manipulation Tools', link: 'guides/examples/vla-as-tools' },
+                { label: 'Multiple Agents', link: 'guides/examples/multiagent' },
               ],
             },
             { 
               label: 'Additional Features',
               items: [
-                { label: 'Using the Position Tool', link: 'guides/features/position-tool' },
+                { label: 'Arm Pose Recording and Recall', link: 'guides/features/position-tool' },
               ],
             },
           ],
